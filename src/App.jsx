@@ -4,14 +4,20 @@ import NavBar             from './NavBar.jsx';
 import MessageList        from './MessageList.jsx';
 import ChatBar            from './ChatBar.jsx';
 
-// {
-//   currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-// }
+const makeID = () => {
+  let text = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+  for(let i=0; i < 5; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
 class App extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
+
     this.state = {
       messages: [
         {
@@ -29,12 +35,35 @@ class App extends Component {
     };
   }
 
+  onMessageSubmit = (message) => {
+    console.log(message);
+    // if (!currentUser) {
+      let currentUser = 'anonymous'
+    // }
+    let newMessageArray = this.state.messages
+    newMessageArray.push(
+      {
+        username: currentUser,
+        content: message
+      }
+    )
+    console.log("newMessageArray", newMessageArray);
+    this.setState({
+      messages: newMessageArray
+    })
+  }
+
   render() {
     return (
       <div className="app-container">
         <NavBar />
-        <MessageList messageList={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} />
+        <MessageList
+          messageList={this.state.messages}
+          />
+        <ChatBar
+          currentUser={this.state.currentUser}
+          onMessageSubmit={this.onMessageSubmit}
+          />
       </div>
     );
   }

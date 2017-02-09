@@ -5,7 +5,7 @@ class MessageList extends Component {
   render(){
 
     const {messageList} = this.props;
-    const usernameChangeNotificaiton = (name) => {
+    const usernameChangeNotification = (name) => {
       if (name.length > 0) {
         return name;
       }

@@ -5,7 +5,8 @@ class ChatBar extends Component {
     super(props);
     this.state = {
       message    : '',
-      currentUser: ''
+      currentUsername: '',
+      oldUsername : ''
     };
   }
   handleMessageChange = (event) => {
@@ -14,7 +15,7 @@ class ChatBar extends Component {
   handleMessageEnterPress = (event) => {
     if (event.keyCode === 13) {
       this.props.onMessageSubmit(
-        this.state.currentUser,
+        this.state.currentUsername,
         this.state.message
       )
       this.setState(
@@ -24,16 +25,19 @@ class ChatBar extends Component {
       )
     }
   }
-  handleUsernameChange = (event) => {
-    this.setState({currentUser: event.target.value})
+  // Function to store old username when a user clicks on the username bar to ostensibly change
+  // their username
+  onClickHandleUsernameChange = (event) => {
+    this.setState({oldUsername: event.target.value})
   }
-  // Function to send notifications on username changes
+  // Function that sets the currentUsername when the username is changed.
+  onChangeHandleUsernameChange = (event) => {
+    this.setState({currentUsername: event.target.value})
+  }
+  // Function to send notifications on username changes.
   handleUsernameEnterPress = (event) => {
-    const previousUsername = this.state.currentUser;
-    console.log(`PREVIOUSUSERNAME ${previousUsername}`);
      if (event.keyCode === 13) {
-       this.props.onUsernameChange(this.state.currentUser)
-       console.log(`CURRENTUSER: ${this.state.currentUser}`)
+       this.props.onUsernameChange(this.state.oldUsername, this.state.currentUsername)
      }
    }
 
@@ -42,10 +46,11 @@ class ChatBar extends Component {
       <footer className="chatbar">
         <input
           className="chatbar-username"
-          placeholder="Your Name  (Optional)"
+          placeholder="Your Name (Optional)"
           value={this.state.currentUser}
-          onChange={this.handleUsernameChange}
+          onChange={this.onChangeHandleUsernameChange}
           onKeyUp={this.handleUsernameEnterPress}
+          onFocus={this.onClickHandleUsernameChange}
           />
         <input
           className="chatbar-message"

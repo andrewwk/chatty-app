@@ -9,15 +9,20 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
-
-const handlePostMessage = (postMessage, newType) => {
-  const messageToBroadcast = {
+// Function that creates a new message object that will be broadcasted to all connected clients
+const handlePostMessage = (postMessage) => {
+  return {
     username: postMessage.username,
     content : postMessage.content,
     uuid    : uuid.v4(),
-    type    : newType
+    type    : 'incomingMessage'
   }
-  return messageToBroadcast;
+}
+const handlePostNotification = (content) => {
+  return {
+    content: content,
+    type   : 'incomingNotification'
+  }
 }
 // Function to broadcast data or message to all clients.
 wss.broadcast = (data) => {
@@ -63,11 +68,11 @@ wss.on('connection', (ws) => {
     let newType = '';
     switch(postMessage.type) {
       case 'postNotification':
-        newType = 'incomingNotification';
+        let returnNotification = handlePostNotification(postMessage.content)
+        wss.broadcast(JSON.stringify(returnNotification));
         break;
       case 'postMessage':
-        newType = 'incomingMessage';
-        let returnMessage = handlePostMessage(postMessage, newType)
+        let returnMessage = handlePostMessage(postMessage)
         wss.broadcast(JSON.stringify(returnMessage));
         break;
       default:

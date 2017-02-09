@@ -14,19 +14,21 @@ class App extends Component {
       clients     : 'No clients connected yet'
     }
   }
-  postNotification = (name) => {
+  // Function to create new mesage object to send to send server to notify all clients of a username
+  // change.
+  postNotification = (oldUsername, newUsername) => {
     this.socket.send(
       JSON.stringify(
         {
-          username: name,
-          type    : 'postNotification'
+          content: `${oldUsername} changed their name to ${newUsername}`,
+          type   :  'postNotification'
         }
       )
     )
   }
   // Function passed to chatbar to handle username changes.
-  onUsernameChange = (name) => {
-    this.postNotification(name);
+  onUsernameChange = (oldUsername, newUsername) => {
+    this.postNotification(oldUsername, newUsername);
   }
   // Function that sends new messages to web socket server.
   sendMessage = (username, message) => {
@@ -44,28 +46,6 @@ class App extends Component {
   // data to web socket server.
   onMessageSubmit = (username, message) => {
     this.sendMessage(username, message);
-  }
-  // Function that receives new message data from the server and sets the state for message
-  // content, username, and uuid.
-  onReceivingDataFromServer = (data) => {
-    const message    = JSON.parse(data);
-    switch (message.type) {
-      case 'postMessage':
-        this.onReceivingNewMessage(message);
-        break;
-      case 'incomingNotification':
-        this.onPostNotificaiton(message.username)
-        break;
-      case 'clientConnections':
-        this.setState(
-          {
-            clients: message.message
-          }
-        )
-        break;
-      default:
-        throw new Error (`Unknown postMessage type: ${postMessage.type}`);
-    }
   }
   // Function to receive new message data from web socket server, create a new message object
   // and add set that to the message state.
@@ -88,13 +68,36 @@ class App extends Component {
     })
   }
   // Notify users of username change
-  onPostNotificaiton = (username) => {
+  onPostNotification = (content) => {
     this.setState(
       {
-        notification: username
+        notification: content
       }
     )
   }
+  // Function that receives new message data from the server and sets the state for message
+  // content, username, and uuid.
+  onReceivingDataFromServer = (data) => {
+    const message    = JSON.parse(data);
+    switch (message.type) {
+      case 'incomingMessage':
+        this.onReceivingNewMessage(message);
+        break;
+      case 'incomingNotification':
+        this.onPostNotification(message.content)
+        break;
+      case 'clientConnections':
+        this.setState(
+          {
+            clients: message.message
+          }
+        )
+        break;
+      default:
+        throw new Error (`Unknown postMessage type: ${postMessage.type}`);
+    }
+  }
+
   componentDidMount(){
     // After component mounts, client establishes connection with web socket server.
     this.socket = new WebSocket('ws://localhost:4000')
@@ -114,12 +117,12 @@ class App extends Component {
         <NavBar connectedClients={this.state.clients} />
         <MessageList
           messageList={this.state.messages}
+          notification={this.state.notification}
           />
         <ChatBar
           currentUser={this.onUsernameChange}
           onMessageSubmit={this.onMessageSubmit}
           onUsernameChange={this.onUsernameChange}
-          notificaiton={this.state.notification}
           />
       </div>
     );

@@ -8,9 +8,9 @@ class MessageList extends Component {
 
     return (
       <main className="messages">
-        {messageList.map((m, index) => {
+        {messageList.map((m) => {
           return (
-            <Message key={index} message={m} />
+            <Message key={m.uuid} message={m} />
           )
         })}
         <div className="message system">

@@ -20,6 +20,7 @@ class App extends Component {
       }
     )
   }
+  // Function that sends new messages to web socket server.
   sendMessage = (username, message) => {
     this.socket.send(
       JSON.stringify(
@@ -30,18 +31,22 @@ class App extends Component {
       )
     )
   }
+  // Function passed to chatbar to handle new messages. Calls sendMessage function to send message data to web socket server.
   onMessageSubmit = (username, message) => {
     this.sendMessage(username, message)
   }
+  // Function that receives new message data from the server and sets the state for message content, username, and uuid.
   onReceivingDataFromServer = (data) => {
     const message    = JSON.parse(data);
     const username   = message.username;
     const content    = message.content;
+    const uuid       = message.uuid;
     const newMessage = this.state.messages;
     newMessage.push(
       {
         username: username,
-        content : content
+        content : content,
+        uuid    : uuid
       }
     )
     this.setState({
@@ -49,15 +54,12 @@ class App extends Component {
     })
   }
   componentDidMount(){
+    // After component mounts, client establishes connection with web socket server.
     this.socket = new WebSocket('ws://localhost:4000')
     // Sending message to server after connection is established
     this.socket.onopen = (event) => {
-      let message = {
-        username: "Bob",
-        content: "Has anyone seen my marbles?",
-        id: 123
-      }
-      this.socket.send(JSON.stringify(message));
+      console.log(`Client connected to Web Socket Server.`);
+      // this.socket.send(JSON.stringify(message));
     }
     // Receving messages from server
     this.socket.onmessage = (event) => {

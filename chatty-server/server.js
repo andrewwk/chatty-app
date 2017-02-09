@@ -79,7 +79,6 @@ wss.on('connection', (ws) => {
       default:
         throw new Error (`Unknown postMessage type: ${postMessage.type}`)
     }
-
   })
   // When a client disconnects, function is called to send a notification to all clients to indicate
   // how many clients are connected. Notification will be displayed in the nav bar.

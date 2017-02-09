@@ -1,5 +1,5 @@
 h1 {
-  color: tomato;
+  color: rgb(26, 188, 156);
 }
 
 body {
@@ -11,7 +11,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: rgb(26, 188, 156);
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -41,6 +41,7 @@ body {
 
 .connected-clients {
   margin-left: auto;
+  font-size: 1.5em;
 }
 
 .message {
@@ -70,7 +71,7 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: rgb(26, 188, 156);
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
@@ -81,6 +82,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+  color: white;
 }
 
 .navbar-brand {

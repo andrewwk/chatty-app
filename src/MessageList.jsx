@@ -3,11 +3,14 @@ import Message from './Message.jsx'
 
 class MessageList extends Component {
   render(){
-
     const {messageList} = this.props;
     const usernameChangeNotification = (name) => {
       if (name.length > 0) {
-        return name;
+        return (
+          <div className="message system" >
+            {name}
+          </div>
+        )
       }
     }
     return (
@@ -17,9 +20,7 @@ class MessageList extends Component {
             <Message key={m.uuid} message={m} />
           )
         })}
-        <div className="message system" >
-          {this.props.notification}
-        </div>
+        {usernameChangeNotification(this.props.notification)}
       </main>
     );
   }

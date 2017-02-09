@@ -5,7 +5,11 @@ class MessageList extends Component {
   render(){
 
     const {messageList} = this.props;
-
+    const usernameChangeNotificaiton = (name) => {
+      if (name.length > 0) {
+        return name;
+      }
+    }
     return (
       <main className="messages">
         {messageList.map((m) => {
@@ -13,8 +17,8 @@ class MessageList extends Component {
             <Message key={m.uuid} message={m} />
           )
         })}
-        <div className="message system">
-          Anonymous1 changed their name to nomnom.
+        <div className="message system" >
+          {this.props.notification}
         </div>
       </main>
     );

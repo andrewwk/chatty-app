@@ -25,18 +25,6 @@ class ChatBar extends Component {
       )
     }
   }
-  // Function to handle if user doesn't press enter
-  onBlurHandleNewMessage = (event) => {
-    this.props.onMessageSubmit(
-      this.state.currentUsername,
-      this.state.message
-    )
-    this.setState(
-      {
-        message: ''
-      }
-    )
-  }
   // Function to store old username when a user clicks on the username bar to ostensibly change
   // their username
   onClickHandleUsernameChange = (event) => {
@@ -76,7 +64,6 @@ class ChatBar extends Component {
           placeholder="Type a message and hit ENTER"
           value   ={this.state.message}
           onChange={this.handleMessageChange}
-          onBlur  ={this.onBlurHandleNewMessage}
           onKeyUp ={this.handleMessageEnterPress}
           />
       </footer>

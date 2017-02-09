@@ -8,11 +8,11 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      messages    : [],
-      username    : '',
-      notification: '',
-      clients     : 'No clients connected yet',
-      userColour  : ''
+      messages     : [],
+      username     : '',
+      notification : '',
+      clients      : 'No clients connected yet',
+      userColour   : ''
     }
   }
   // Function to create new mesage object to send to send server to notify all clients of a username
@@ -21,8 +21,8 @@ class App extends Component {
     this.socket.send(
       JSON.stringify(
         {
-          content: `${oldUsername} changed their name to ${newUsername}`,
-          type   :  'postNotification'
+          content : `${oldUsername} changed their name to ${newUsername}`,
+          type    :  'postNotification'
         }
       )
     )
@@ -76,7 +76,7 @@ class App extends Component {
   onPostNotification = (content) => {
     this.setState(
       {
-        notification: content
+        notification : content
       }
     )
   }
@@ -118,19 +118,20 @@ class App extends Component {
       this.onReceivingDataFromServer(event.data);
     }
   }
-  render() {
+  
+  render(){
     return (
       <div className="app-container">
         <NavBar connectedClients={this.state.clients} />
         <MessageList
-          messageList={this.state.messages}
+          messageList ={this.state.messages}
           notification={this.state.notification}
           />
         <ChatBar
-          currentUser={this.onUsernameChange}
-          onMessageSubmit={this.onMessageSubmit}
+          currentUser     ={this.onUsernameChange}
+          onMessageSubmit ={this.onMessageSubmit}
           onUsernameChange={this.onUsernameChange}
-          userColour={this.state.userColour}
+          userColour      ={this.state.userColour}
           />
       </div>
     );

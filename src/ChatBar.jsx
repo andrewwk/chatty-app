@@ -4,9 +4,9 @@ class ChatBar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      message    : '',
-      currentUsername: '',
-      oldUsername : ''
+      message         : '',
+      currentUsername : '',
+      oldUsername     : ''
     };
   }
   // Function to set message state. Validates whether or not any characters/content exists before
@@ -74,21 +74,21 @@ class ChatBar extends Component {
     return (
       <footer className="chatbar">
         <input
-          className="chatbar-username"
+          className  ="chatbar-username"
           placeholder="Your Name (Optional)"
-          value   ={this.state.currentUser}
-          onChange={this.onChangeHandleUsernameChange}
-          onBlur  ={this.onBlurHandleUsernameChange}
-          onKeyUp ={this.handleUsernameEnterPress}
-          onFocus ={this.onClickHandleUsernameChange}
+          value      ={this.state.currentUser}
+          onChange   ={this.onChangeHandleUsernameChange}
+          onBlur     ={this.onBlurHandleUsernameChange}
+          onKeyUp    ={this.handleUsernameEnterPress}
+          onFocus    ={this.onClickHandleUsernameChange}
           />
         <input
-          className="chatbar-message"
+          className  ="chatbar-message"
           placeholder="Type a message and hit ENTER"
-          value   ={this.state.message}
-          onChange={this.handleMessageChange}
-          onBlur  ={this.onBlurHandleNewMessage}
-          onKeyUp ={this.handleMessageEnterPress}
+          value      ={this.state.message}
+          onChange   ={this.handleMessageChange}
+          onBlur     ={this.onBlurHandleNewMessage}
+          onKeyUp    ={this.handleMessageEnterPress}
           />
       </footer>
     );

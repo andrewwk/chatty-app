@@ -13,10 +13,10 @@ class Message extends Component {
 
   render(){
     const {message} = this.props;
+    // User/connection/client unique colour for username
     const styles = {
       color: this.props.userColour
     }
-
     return (
       <div className="message">
         <span className="message-username" style={styles}>

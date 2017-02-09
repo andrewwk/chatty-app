@@ -21,24 +21,25 @@ const handlePostMessage = (postMessage) => {
 // Function to create imcomingNotification message object that gets sent to all connected clients.
 const handlePostNotification = (content) => {
   return {
-    content: content,
-    type   : 'incomingNotification'
+    content : content,
+    type    : 'incomingNotification'
   }
 }
+// Array of colours that will be assigned to each web socket connection/client/user
 const usernameColours = [
   'rgb(52, 73, 94)',
   'rgb(22, 160, 133)',
   'rgb(142, 68, 173)',
   'rgb(41, 128, 185)',
   'rgb(192, 57, 43)',
-  'rgb(211, 84, 0)'
+  'rgb(211, 84, 0)',
+  'rgb(52, 152, 219)',
+  'rgb(155, 89, 182)',
+  'rgb(230, 126, 34)',
+  'rgb(241, 196, 15)',
+  'rgb(46, 204, 113)',
+  'rgb(231, 76, 60)'
 ]
-// Function to broadcast data or message to all clients.
-wss.broadcast = (data) => {
-  wss.clients.forEach((client) => {
-    client.send(data);
-  });
-};
 // Function to create notification that sends the number of connected clients to all connected
 // clients
 const connectedClientsNotification = (clients) => {
@@ -50,10 +51,16 @@ const connectedClientsNotification = (clients) => {
     message = `${clients} clients connected.`
   }
   return {
-    message: message,
-    type   : 'clientConnections'
+    message : message,
+    type    : 'clientConnections'
   }
 }
+// Function to broadcast data or message to all clients.
+wss.broadcast = (data) => {
+  wss.clients.forEach((client) => {
+    client.send(data);
+  });
+};
 // Variable to keep track of the number of clients connected. Stored outside of wss on connection
 // scope
 let connectedClients = 0;
@@ -66,7 +73,7 @@ wss.on('connection', (ws) => {
     message      : 'WSS Connection established',
     type         : 'clientConnectionInitialized',
     connectionID : connectedClients,
-    userColour   : usernameColours[connectedClients]
+    userColour   : usernameColours[connectedClients - 1]
   }
   ws.send(JSON.stringify(message))
   // When a client connects, function is called to send a notification to all clients to indicate
@@ -94,7 +101,7 @@ wss.on('connection', (ws) => {
         wss.broadcast(JSON.stringify(returnMessage));
         break;
       default:
-        throw new Error (`Unknown postMessage type: ${postMessage.type}`)
+        throw new Error (`Unknown postMessage type: ${postMessage.type}`);
     }
   })
   // When a client disconnects, function is called to send a notification to all clients to indicate

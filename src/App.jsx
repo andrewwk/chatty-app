@@ -4,55 +4,66 @@ import NavBar             from './NavBar.jsx';
 import MessageList        from './MessageList.jsx';
 import ChatBar            from './ChatBar.jsx';
 
-const makeID = () => {
-  let text = "";
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for(let i=0; i < 5; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
 class App extends Component {
   constructor(props){
     super(props);
-
     this.state = {
-      messages: [
-        {
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-          id: 123
-        },
-        {
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-          id: 456
-        }
-      ],
-      currentUser: 'Anonymous1'
-    };
+      messages: [],
+      username: '',
+    }
   }
-
-  onMessageSubmit = (message) => {
-    console.log(message);
-    // if (!currentUser) {
-      let currentUser = 'anonymous'
-    // }
-    let newMessageArray = this.state.messages
-    newMessageArray.push(
+  // Function passed to chatbar to handle username changes.
+  onUsernameChange = (name) => {
+    this.setState(
       {
-        username: currentUser,
-        content: message
+        username: name
       }
     )
-    console.log("newMessageArray", newMessageArray);
+  }
+  sendMessage = (username, message) => {
+    this.socket.send(
+      JSON.stringify(
+        {
+          username: username,
+          content: message
+        }
+      )
+    )
+  }
+  onMessageSubmit = (username, message) => {
+    this.sendMessage(username, message)
+  }
+  onReceivingDataFromServer = (data) => {
+    const message    = JSON.parse(data);
+    const username   = message.username;
+    const content    = message.content;
+    const newMessage = this.state.messages;
+    newMessage.push(
+      {
+        username: username,
+        content : content
+      }
+    )
     this.setState({
-      messages: newMessageArray
+      messages: newMessage
     })
   }
-
+  componentDidMount(){
+    this.socket = new WebSocket('ws://localhost:4000')
+    // Sending message to server after connection is established
+    this.socket.onopen = (event) => {
+      let message = {
+        username: "Bob",
+        content: "Has anyone seen my marbles?",
+        id: 123
+      }
+      this.socket.send(JSON.stringify(message));
+    }
+    // Receving messages from server
+    this.socket.onmessage = (event) => {
+      this.onReceivingDataFromServer(event.data);
+    }
+  }
   render() {
     return (
       <div className="app-container">
@@ -61,7 +72,7 @@ class App extends Component {
           messageList={this.state.messages}
           />
         <ChatBar
-          currentUser={this.state.currentUser}
+          currentUser={this.onUsernameChange}
           onMessageSubmit={this.onMessageSubmit}
           />
       </div>

@@ -23,14 +23,6 @@ class ChatBar extends Component {
       this.setState({message: ''})
     }
   }
-  // handleUsernameEnterPress = (event) => {
-  //   if (event.keyCode === 13) {
-  //     this.props.onUsernameChange(this.state.currentUser)
-  //     this.setState({currentUser: 'Anonymous'})
-  //   }
-  // }
-
-    // onKeyUp={this.handleUsernameEnterPress}
 
   render(){
     return (

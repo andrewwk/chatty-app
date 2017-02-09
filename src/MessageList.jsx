@@ -2,17 +2,18 @@ import React, {Component} from 'react';
 import Message from './Message.jsx'
 
 class MessageList extends Component {
+  // Function to render username change notifcaitons. First validates whether or not content exists.
+  onUsernameChangeNotification = (notification) => {
+    if (notification.length > 0 && notification.length !== '' && notification.length !== null) {
+      return (
+        <div className="message system" >
+          {notification}
+        </div>
+      )
+    }
+  }
   render(){
     const {messageList} = this.props;
-    const usernameChangeNotification = (name) => {
-      if (name.length > 0) {
-        return (
-          <div className="message system" >
-            {name}
-          </div>
-        )
-      }
-    }
     return (
       <main className="messages">
         {messageList.map((m) => {
@@ -20,7 +21,7 @@ class MessageList extends Component {
             <Message key={m.uuid} message={m} />
           )
         })}
-        {usernameChangeNotification(this.props.notification)}
+        {this.onUsernameChangeNotification(this.props.notification)}
       </main>
     );
   }

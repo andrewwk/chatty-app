@@ -6,7 +6,6 @@ const uuid         = require('node-uuid');
 const server = express()
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
-
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 // Function that creates a new message object that will be broadcasted to all connected clients
@@ -18,6 +17,7 @@ const handlePostMessage = (postMessage) => {
     type    : 'incomingMessage'
   }
 }
+// Function to create imcomingNotification message object that gets sent to all connected clients.
 const handlePostNotification = (content) => {
   return {
     content: content,
@@ -66,6 +66,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     const postMessage = JSON.parse(message)
     let newType = '';
+    // Checks the incoming message type and calls the appropriate function.
     switch(postMessage.type) {
       case 'postNotification':
         let returnNotification = handlePostNotification(postMessage.content)

@@ -67,7 +67,8 @@ class App extends Component {
       messages: postMessage
     })
   }
-  // Notify users of username change
+  // Function to notify users of username change. Sets state for notification to equal content from
+  // web socket server.
   onPostNotification = (content) => {
     this.setState(
       {
@@ -75,8 +76,8 @@ class App extends Component {
       }
     )
   }
-  // Function that receives new message data from the server and sets the state for message
-  // content, username, and uuid.
+  // Function that receives new message data from the server, checks the message tyep, and sets the
+  // state for message content, username, and uuid.
   onReceivingDataFromServer = (data) => {
     const message    = JSON.parse(data);
     switch (message.type) {
@@ -97,7 +98,6 @@ class App extends Component {
         throw new Error (`Unknown postMessage type: ${postMessage.type}`);
     }
   }
-
   componentDidMount(){
     // After component mounts, client establishes connection with web socket server.
     this.socket = new WebSocket('ws://localhost:4000')
@@ -106,7 +106,7 @@ class App extends Component {
       console.log(`Client connected to Web Socket Server.`);
       // this.socket.send(JSON.stringify(message));
     }
-    // Receving messages from server
+    // Receving messages from server. Uses onReceivingDataFromServer function to check message type.
     this.socket.onmessage = (event) => {
       this.onReceivingDataFromServer(event.data);
     }

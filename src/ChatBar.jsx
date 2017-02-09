@@ -9,11 +9,17 @@ class ChatBar extends Component {
       oldUsername : ''
     };
   }
+  // Function to set message state. Validates whether or not any characters/content exists before
+  // setting the message state.
   handleMessageChange = (event) => {
-    this.setState({message: event.target.value});
+    if (event.target.value !== '' && event.target.value !== null) {
+      this.setState({message: event.target.value});
+    }
   }
+  // Function to handle if user presses enter after composing a new message. Validates whether a
+  // message exists before calling onMessageSubmit function.
   handleMessageEnterPress = (event) => {
-    if (event.keyCode === 13 && this.state.message !== '') {
+    if (event.keyCode === 13 && this.state.message !== '' && this.state.message !== null) {
       this.props.onMessageSubmit(
         this.state.currentUsername,
         this.state.message
@@ -25,7 +31,8 @@ class ChatBar extends Component {
       )
     }
   }
-  // Function to handle if user doesn't press enter
+  // Function to handle if user doesn't press enter. Validates whether a message exists before
+  // calling onMessageSubmit function.
   onBlurHandleNewMessage = (event) => {
     if (this.state.message !== '') {
       this.props.onMessageSubmit(
@@ -48,13 +55,15 @@ class ChatBar extends Component {
   onChangeHandleUsernameChange = (event) => {
     this.setState({currentUsername: event.target.value});
   }
-  // Function to handle if user doesn't press enter
+  // Function to handle if user doesn't press enter. Validates whether a previous username exists,
+  // and then calls onUsernameChange function.
   onBlurHandleUsernameChange = (event) => {
     if (this.state.oldUsername !== '' && this.state.oldUsername !== null) {
       this.props.onUsernameChange(this.state.oldUsername, this.state.currentUsername);
     }
   }
-  // Function to send notifications on username changes.
+  // Function to send notifications on username changes. Validates whether a previous username
+  // exists, and then calls onUsernameChange function.
   handleUsernameEnterPress = (event) => {
      if (event.keyCode === 13 && this.state.oldUsername !== '') {
        this.props.onUsernameChange(this.state.oldUsername, this.state.currentUsername);

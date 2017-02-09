@@ -13,7 +13,21 @@ class ChatBar extends Component {
     this.setState({message: event.target.value});
   }
   handleMessageEnterPress = (event) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && this.state.message !== '') {
+      this.props.onMessageSubmit(
+        this.state.currentUsername,
+        this.state.message
+      )
+      this.setState(
+        {
+          message: ''
+        }
+      )
+    }
+  }
+  // Function to handle if user doesn't press enter
+  onBlurHandleNewMessage = (event) => {
+    if (this.state.message !== '') {
       this.props.onMessageSubmit(
         this.state.currentUsername,
         this.state.message
@@ -64,6 +78,7 @@ class ChatBar extends Component {
           placeholder="Type a message and hit ENTER"
           value   ={this.state.message}
           onChange={this.handleMessageChange}
+          onBlur  ={this.onBlurHandleNewMessage}
           onKeyUp ={this.handleMessageEnterPress}
           />
       </footer>

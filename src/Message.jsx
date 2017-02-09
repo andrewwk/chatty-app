@@ -10,12 +10,16 @@ class Message extends Component {
       return name;
     }
   }
+
   render(){
     const {message} = this.props;
+    const styles = {
+      color: this.props.userColour
+    }
 
     return (
       <div className="message">
-        <span className="message-username">
+        <span className="message-username" style={styles}>
           {this.usernameValidation(message.username)}
         </span>
         <span className="message-content">

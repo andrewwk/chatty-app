@@ -37,7 +37,7 @@ class ChatBar extends Component {
     if (this.state.message !== '') {
       this.props.onMessageSubmit(
         this.state.currentUsername,
-        this.state.message
+        this.state.message,
       )
       this.setState(
         {

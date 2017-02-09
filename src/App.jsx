@@ -11,7 +11,8 @@ class App extends Component {
       messages    : [],
       username    : '',
       notification: '',
-      clients     : 'No clients connected yet'
+      clients     : 'No clients connected yet',
+      userColour  : ''
     }
   }
   // Function to create new mesage object to send to send server to notify all clients of a username
@@ -35,9 +36,10 @@ class App extends Component {
     this.socket.send(
       JSON.stringify(
         {
-          username: username,
-          content : message,
-          type    : 'postMessage'
+          username   : username,
+          content    : message,
+          type       : 'postMessage',
+          userColour : this.state.userColour
         }
       )
     )
@@ -48,19 +50,21 @@ class App extends Component {
     this.sendMessage(username, message);
   }
   // Function to receive new message data from web socket server, create a new message object
-  // and add set that to the message state.
+  // and add set that to the message state. Adds the distinct username colour for the client.
   onReceivingNewMessage = (message) => {
     const username    = message.username;
     const content     = message.content;
     const uuid        = message.uuid;
     const type        = message.type;
+    const userColour  = message.userColour;
     const postMessage = this.state.messages;
     postMessage.push(
       {
-        username: username,
-        content : content,
-        uuid    : uuid,
-        type    : type
+        username   : username,
+        content    : content,
+        uuid       : uuid,
+        type       : type,
+        userColour : userColour
       }
     )
     this.setState({
@@ -76,11 +80,14 @@ class App extends Component {
       }
     )
   }
-  // Function that receives new message data from the server, checks the message tyep, and sets the
-  // state for message content, username, and uuid.
+  // Function that receives new message data from the server, checks the message type, and sets the
+  // state for message content, username, uuid, and/or userColour depending on the message type.
   onReceivingDataFromServer = (data) => {
     const message    = JSON.parse(data);
     switch (message.type) {
+      case 'clientConnectionInitialized':
+        this.setState({userColour: message.userColour})
+        break;
       case 'incomingMessage':
         this.onReceivingNewMessage(message);
         break;
@@ -123,6 +130,7 @@ class App extends Component {
           currentUser={this.onUsernameChange}
           onMessageSubmit={this.onMessageSubmit}
           onUsernameChange={this.onUsernameChange}
+          userColour={this.state.userColour}
           />
       </div>
     );

@@ -11,10 +11,11 @@ const wss = new SocketServer({ server });
 // Function that creates a new message object that will be broadcasted to all connected clients
 const handlePostMessage = (postMessage) => {
   return {
-    username: postMessage.username,
-    content : postMessage.content,
-    uuid    : uuid.v4(),
-    type    : 'incomingMessage'
+    username   : postMessage.username,
+    content    : postMessage.content,
+    userColour : postMessage.userColour,
+    uuid       : uuid.v4(),
+    type       : 'incomingMessage'
   }
 }
 // Function to create imcomingNotification message object that gets sent to all connected clients.
@@ -24,6 +25,14 @@ const handlePostNotification = (content) => {
     type   : 'incomingNotification'
   }
 }
+const usernameColours = [
+  'rgb(52, 73, 94)',
+  'rgb(22, 160, 133)',
+  'rgb(142, 68, 173)',
+  'rgb(41, 128, 185)',
+  'rgb(192, 57, 43)',
+  'rgb(211, 84, 0)'
+]
 // Function to broadcast data or message to all clients.
 wss.broadcast = (data) => {
   wss.clients.forEach((client) => {
@@ -53,6 +62,13 @@ let connectedClients = 0;
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   connectedClients += 1;
+  const message =  {
+    message      : 'WSS Connection established',
+    type         : 'clientConnectionInitialized',
+    connectionID : connectedClients,
+    userColour   : usernameColours[connectedClients]
+  }
+  ws.send(JSON.stringify(message))
   // When a client connects, function is called to send a notification to all clients to indicate
   // how many clients are connected. Notification will be displayed in the nav bar.
   wss.broadcast(
@@ -73,6 +89,7 @@ wss.on('connection', (ws) => {
         wss.broadcast(JSON.stringify(returnNotification));
         break;
       case 'postMessage':
+        debugger;
         let returnMessage = handlePostMessage(postMessage)
         wss.broadcast(JSON.stringify(returnMessage));
         break;

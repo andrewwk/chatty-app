@@ -12,13 +12,14 @@ class MessageList extends Component {
       )
     }
   }
+
   render(){
     const {messageList} = this.props;
     return (
       <main className="messages">
         {messageList.map((m) => {
           return (
-            <Message key={m.uuid} message={m} />
+            <Message key={m.uuid} message={m} userColour={m.userColour}/>
           )
         })}
         {this.onUsernameChangeNotification(this.props.notification)}

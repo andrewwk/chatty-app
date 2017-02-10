@@ -15,6 +15,7 @@ class App extends Component {
       userColour   : ''
     }
   }
+
   // Function to create new mesage object to send to send server to notify all clients of a username
   // change.
   postNotification = (oldUsername, newUsername) => {
@@ -27,10 +28,12 @@ class App extends Component {
       )
     )
   }
+
   // Function passed to chatbar to handle username changes.
   onUsernameChange = (oldUsername, newUsername) => {
     this.postNotification(oldUsername, newUsername);
   }
+
   // Function that sends new messages to web socket server.
   sendMessage = (username, message) => {
     this.socket.send(
@@ -44,11 +47,13 @@ class App extends Component {
       )
     )
   }
+
   // Function passed to chatbar to handle new messages. Calls sendMessage function to send message
   // data to web socket server.
   onMessageSubmit = (username, message) => {
     this.sendMessage(username, message);
   }
+
   // Function to receive new message data from web socket server, create a new message object
   // and add set that to the message state. Adds the distinct username colour for the client.
   onReceivingNewMessage = (message) => {
@@ -71,6 +76,7 @@ class App extends Component {
       messages: postMessage
     })
   }
+
   // Function to notify users of username change. Sets state for notification to equal content from
   // web socket server.
   onPostNotification = (content) => {
@@ -80,6 +86,7 @@ class App extends Component {
       }
     )
   }
+
   // Function that receives new message data from the server, checks the message type, and sets the
   // state for message content, username, uuid, and/or userColour depending on the message type.
   onReceivingDataFromServer = (data) => {
@@ -105,20 +112,24 @@ class App extends Component {
         throw new Error (`Unknown postMessage type: ${postMessage.type}`);
     }
   }
+
   componentDidMount(){
+
     // After component mounts, client establishes connection with web socket server.
     this.socket = new WebSocket('ws://localhost:4000')
+
     // Sending message to server after connection is established
     this.socket.onopen = (event) => {
       console.log(`Client connected to Web Socket Server.`);
-      // this.socket.send(JSON.stringify(message));
+      this.socket.send(JSON.stringify(message));
     }
+
     // Receving messages from server. Uses onReceivingDataFromServer function to check message type.
     this.socket.onmessage = (event) => {
       this.onReceivingDataFromServer(event.data);
     }
   }
-  
+
   render(){
     return (
       <div className="app-container">

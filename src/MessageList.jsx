@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Message            from './Message.jsx'
 
 class MessageList extends Component {
+
   // Function to render username change notifcaitons. First validates whether or not content exists.
   onUsernameChangeNotification = (notification) => {
     if (notification.length > 0 && notification.length !== '' && notification.length !== null) {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 class Message extends Component {
+
   // Function that checks if a username exists. If it exists, it will display the currentUsername.
   // If not, it will display anonymous.
   usernameValidation = (name) => {

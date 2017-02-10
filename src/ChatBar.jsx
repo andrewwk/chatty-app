@@ -9,6 +9,7 @@ class ChatBar extends Component {
       oldUsername     : ''
     };
   }
+
   // Function to set message state. Validates whether or not any characters/content exists before
   // setting the message state.
   handleMessageChange = (event) => {
@@ -16,6 +17,7 @@ class ChatBar extends Component {
       this.setState({message: event.target.value});
     }
   }
+
   // Function to handle if user presses enter after composing a new message. Validates whether a
   // message exists before calling onMessageSubmit function.
   handleMessageEnterPress = (event) => {
@@ -31,6 +33,7 @@ class ChatBar extends Component {
       )
     }
   }
+
   // Function to handle if user doesn't press enter. Validates whether a message exists before
   // calling onMessageSubmit function.
   onBlurHandleNewMessage = (event) => {
@@ -46,15 +49,18 @@ class ChatBar extends Component {
       )
     }
   }
+
   // Function to store old username when a user clicks on the username bar to ostensibly change
   // their username
   onClickHandleUsernameChange = (event) => {
     this.setState({oldUsername: event.target.value});
   }
+
   // Function that sets the currentUsername when the username is changed.
   onChangeHandleUsernameChange = (event) => {
     this.setState({currentUsername: event.target.value});
   }
+
   // Function to handle if user doesn't press enter. Validates whether a previous username exists,
   // and then calls onUsernameChange function.
   onBlurHandleUsernameChange = (event) => {
@@ -62,6 +68,7 @@ class ChatBar extends Component {
       this.props.onUsernameChange(this.state.oldUsername, this.state.currentUsername);
     }
   }
+
   // Function to send notifications on username changes. Validates whether a previous username
   // exists, and then calls onUsernameChange function.
   handleUsernameEnterPress = (event) => {

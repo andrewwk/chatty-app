@@ -1,9 +1,26 @@
-React Boilerplate
+Chatty App
 =====================
 
-A minimal and light dev environment for ReactJS.
+# Project Description
+Many of the web applications that you use today have real-time functionality where the user does not have to reload the page in order to see updates. Major examples of these include Slack, Twitter and Facebook.
 
-### Usage
+Chatty will allow users to communicate with each other without having to register accounts. It will use React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel.
+
+### Additional Features
+1. Notifity users of username change. (Completed)
+2. Display the number of clients connected to the server/display the number of current users. (Completed)
+3. Assign a random colour to each user/connection. The colour will not change, even if the username is change. (Completed)
+4. Allow users to post image urls and display the images within the chat application. (In Progress)
+
+# Learning Objectives
+1. Can explain what the "Virtual Dom" is and how it works
+2. Can explain benefits of using a Virtual DOM
+3. Can explain how React uses a Virtual DOM
+4. Can understand Component Lifecycles
+5. Can successfully use Web Sockets to allow multiple users to send and receive messages inside of a single page, chat        
+   application.
+
+### Getting Started
 
 Clone the boilerplate and create your own git repo.
 
@@ -21,12 +38,6 @@ npm install
 npm start
 open http://localhost:3000
 ```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
 
 ### Linting
 

@@ -12,7 +12,7 @@ Chatty will allow users to communicate with each other without having to registe
 3. Assign a random colour to each user/connection. The colour will not change, even if the username is change. (Completed)
 4. Allow users to post image urls and display the images within the chat application. (In Progress)
 
-# Learning Objectives
+### Learning Objectives
 1. Can explain what the "Virtual Dom" is and how it works
 2. Can explain benefits of using a Virtual DOM
 3. Can explain how React uses a Virtual DOM
